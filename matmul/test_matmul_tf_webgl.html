@@ -1,0 +1,45 @@
+<html>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.0.0/dist/tf.min.js"></script>
+    <script>
+        const test = async () => {
+            console.time('all');
+            console.time('backend set');
+            await tf.setBackend("webgl");
+            console.timeEnd('backend set');
+            const n = 1000, m = 1000, v = 1000;
+            const mat1 = [], mat2 = [];
+            const res = [];
+            console.time('create mat1');
+            for(let i = 0; i < n; i++) {
+                const item = [];
+                res.push(new Array(v).fill(0));
+                for (let j = 0; j < m; j++) {
+                    item.push(Math.random()); 
+                }
+                mat1.push(item);
+            }
+            console.timeEnd('create mat1');
+            for(let i = 0; i < m; i++) {
+                const item = [];
+                for (let j = 0; j < v; j++) {
+                    item.push(Math.random()); 
+                }
+                mat2.push(item);
+            }
+            console.time('tfjs procces');
+            console.time('create mat1 tensor');
+            const mat1Tensor = tf.tensor(mat1);
+            console.timeEnd('create mat1 tensor');
+            console.time('create mat2 tensor');
+            const mat2Tensor = tf.tensor(mat2);
+            console.timeEnd('create mat2 tensor');
+            console.time('matmul');
+            tf.matMul(mat1Tensor, mat2Tensor);
+            console.timeEnd('matmul');
+            console.timeEnd('tfjs procces');
+            console.timeEnd('all');
+        }
+        test();
+        
+    </script>
+</html>
